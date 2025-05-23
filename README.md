@@ -44,19 +44,27 @@ This is a FastAPI-based real-time chat application using **WebSockets** and **Re
 
 ### 1. Clone the repository
 
-```bash
+<pre>
 git clone https://github.com/yourusername/fastapi-ws-redis.git
-```
+</pre>
 
 
 Run the app using Docker Compose
-
+<pre>
 docker-compose up --build
+</pre>
 The FastAPI server will be available at:
+<pre>
 📡 http://localhost:8000
+</pre>
 WebSocket endpoint:
+<pre>
 📨 ws://localhost:8000/ws/{user_id}
-🔁 ws://localhost:8000/ws/redis/{user_id} for Redis Pub/Sub handler.
+</pre>
+<pre>
+🔁 ws://localhost:8000/ws/redis/{user_id} 
+</pre>
+for Redis Pub/Sub handler.
 
 
 
@@ -64,15 +72,17 @@ WebSocket endpoint:
 Example WebSocket Message Body
 Send this message via WebSocket from user 11:
 
-
+<pre>
 {
   "to": "1",
   "from": "11",
   "message": "hello1"
 }
+</pre>
 
 If user 1 is connected, they'll receive:
 
+<pre>
 
 {
   "from": "11",
@@ -80,13 +90,15 @@ If user 1 is connected, they'll receive:
 }
 
 
+</pre>
+
 
 🔌 API Endpoints
-
+<pre>
 Method	Endpoint	Description
 WS	/ws/{user_id}	Basic user WebSocket
 WS	/ws/redis/{user_id}	Redis-based WebSocket routing
-
+</pre>
 
 
 ---
