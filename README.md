@@ -17,7 +17,9 @@ This is a FastAPI-based real-time chat application using **WebSockets** and **Re
 ## 🔧 Project Structure
 
 
-.
+
+
+<pre> \`\`\` .
 ├── app
 │   ├── auth.py
 │   ├── connection_manager.py
@@ -31,6 +33,7 @@ This is a FastAPI-based real-time chat application using **WebSockets** and **Re
 ├── Dockerfile
 ├── README.md
 └── requirements.txt
+ \`\`\` </pre>
 
 
 
