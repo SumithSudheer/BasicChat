@@ -1,7 +1,8 @@
+import asyncio
 from datetime import datetime
 import json
 from fastapi import WebSocket, WebSocketDisconnect
-from app.redis import publish_message
+from app.redis import PUBSUB_PREFIX, publish_message, redis_subscriber
 from app.connection_manager import add_client, remove_client, get_clients
 import logging
 from .models import Message
@@ -39,6 +40,31 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str,token:str=None):
         print(f"Error in WebSocket: {e}",flush=True)
 
 
+
+async def websocket_endpoint_redis(websocket: WebSocket, room_id: str):
+    await websocket.accept()
+    add_client(room_id, websocket)
+
+    # Start Redis subscriber in the background
+    subscriber_task = asyncio.create_task(redis_subscriber(room_id))
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            payload = json.loads(data)
+
+            to_user = payload.get("to")
+            message = payload.get("message")
+
+            # Publish to recipient's Redis channel
+            await publish_message(PUBSUB_PREFIX + to_user, json.dumps({
+                "from": room_id,
+                "message": message
+            }))
+
+    except WebSocketDisconnect:
+        # del connected_users[user_id]
+        subscriber_task.cancel()
 
 def store_message(room_id: str, message: str, sender_id: int):
     db = SessionLocal()

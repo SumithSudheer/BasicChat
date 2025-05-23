@@ -14,6 +14,7 @@ app = FastAPI()
 Base.metadata.create_all(bind=engine)
 
 app.add_api_websocket_route("/ws/{room_id}", websocket_endpoint)
+app.add_api_websocket_route("/ws/redis/{room_id}", websocket_endpoint)
 
 app.add_middleware(
     CORSMiddleware,
